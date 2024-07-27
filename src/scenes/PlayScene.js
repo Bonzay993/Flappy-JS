@@ -16,6 +16,8 @@ class PlayScene extends Phaser.Scene {
         
         this.score = 0;
         this.scoreText = "";
+
+        
     }
 
     preload() {
@@ -74,7 +76,9 @@ class PlayScene extends Phaser.Scene {
 
     createScore(){
         this.score = 0;
+        const bestScore = localStorage.getItem('bestScore');
         this.scoreText = this.add.text(16, 16,`Score: ${0}`, {fontSize: '32px', fill: '#000'})            //creates a text
+        this.add.text(16, 52,`Best score: ${bestScore || 0}`, {fontSize: '18px', fill: '#000'})            //creates a text
     }
 
     handleInputs(){
@@ -130,6 +134,13 @@ class PlayScene extends Phaser.Scene {
         //this.bird.body.velocity.y = 0;
         this.physics.pause();
         this.bird.setTint(0xff0000);
+
+        const bestScoreText= localStorage.getItem('bestScore');
+        const bestScore = bestScoreText && parseInt(bestScoreText, 10);
+
+        if(!bestScore || this.score > bestScore) {
+            localStorage.setItem('bestScore', this.score);
+        }
         
         this.time.addEvent({
             delay: 1000,     //restart scene after 1 sec
