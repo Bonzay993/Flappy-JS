@@ -20,12 +20,7 @@ class PlayScene extends Phaser.Scene {
         
     }
 
-    preload() {
-        this.load.image('sky', '../assets/sky.png');
-        this.load.image('bird', '../assets/bird.png');
-        this.load.image('pipe' , '../../assets/pipe.png');
-    }
-
+ 
     create() {
         this.createBG();     //creates the background
         this.createBird();   //creates the bird
@@ -33,6 +28,7 @@ class PlayScene extends Phaser.Scene {
         this.createColliders(); //creates the colliders
         this.handleInputs(); //creates the inputs
         this.createScore();  //creates the score
+        this.createPause();  //creates the pause button
     }
 
     update() {
@@ -48,7 +44,7 @@ class PlayScene extends Phaser.Scene {
         //added .physics so it takes the physics values as mentioned in config
         this.bird = this.physics.add.sprite(this.config.startPosition.x, this.config.startPosition.y, 'bird').setOrigin(0);   //bird
         this.bird.body.gravity.y = 500;  
-        this.bird.setCollideWorldBounds(true) 
+        this.bird.setCollideWorldBounds(true); 
     }
 
     createPipes(){
@@ -79,6 +75,20 @@ class PlayScene extends Phaser.Scene {
         const bestScore = localStorage.getItem('bestScore');
         this.scoreText = this.add.text(16, 16,`Score: ${0}`, {fontSize: '32px', fill: '#000'})            //creates a text
         this.add.text(16, 52,`Best score: ${bestScore || 0}`, {fontSize: '18px', fill: '#000'})            //creates a text
+    }
+
+    createPause(){
+       const pauseButton =  this.add.image(this.config.width -10, this.config.height -10, 'pause')
+        .setInteractive() //make the button interactive and enables the event as pointerdown eg.
+        .setOrigin(1)
+        .setScale(3);
+
+           
+
+        pauseButton.on('pointerdown', () => {
+            this.physics.pause();   //pausing the game physics and scene
+            this.scene.pause();
+        })
     }
 
     handleInputs(){

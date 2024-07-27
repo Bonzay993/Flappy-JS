@@ -1,6 +1,8 @@
 //Importing Phaser
 import Phaser from "./phaser.js";
 import PlayScene from "./scenes/PlayScene.js";
+import MenuScene from "./scenes/MenuScene.js";
+import PreloadScene from "./scenes/PreloadScene.js";
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -29,7 +31,7 @@ const config = {
   },
   
   //What you see on the screen
-  scene: [new PlayScene(SHARED_CONFIG)]
+  scene: [PreloadScene, new MenuScene(SHARED_CONFIG), new PlayScene(SHARED_CONFIG)]
 };
 
 
