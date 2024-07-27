@@ -126,7 +126,14 @@ class PlayScene extends Phaser.Scene {
             }
         })
     }
+    saveBestScore(){
+        const bestScoreText= localStorage.getItem('bestScore');
+        const bestScore = bestScoreText && parseInt(bestScoreText, 10);
 
+        if(!bestScore || this.score > bestScore) {
+            localStorage.setItem('bestScore', this.score);
+        }
+    }
 
     gameOver(){           //when you loose it reset the bird position and sets the velocity to 0
         //this.bird.x = this.config.startPosition.x;
@@ -135,12 +142,7 @@ class PlayScene extends Phaser.Scene {
         this.physics.pause();
         this.bird.setTint(0xff0000);
 
-        const bestScoreText= localStorage.getItem('bestScore');
-        const bestScore = bestScoreText && parseInt(bestScoreText, 10);
-
-        if(!bestScore || this.score > bestScore) {
-            localStorage.setItem('bestScore', this.score);
-        }
+        this.saveBestScore()
         
         this.time.addEvent({
             delay: 1000,     //restart scene after 1 sec
@@ -158,6 +160,7 @@ class PlayScene extends Phaser.Scene {
     increaseScore() {
         this.score +=1;
         this.scoreText.setText(`Score: ${this.score}`);
+        this.saveBestScore()
     }
       
     getRightMostPipe(){
